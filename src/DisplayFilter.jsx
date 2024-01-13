@@ -6,12 +6,13 @@ const MainDiv = styled.div`
   display: flex;
 `;
 
-function DisplayFilter({ getByOption, chemistry, process }) {
+function DisplayFilter({ getByOption, chemistry, process, setSelected }) {
   // Handle change event for select inputs
   function onOptionChangeHandler(e) {
     const { name, value } = e.target;
     // Notify the parent component about the selected option
     getByOption(value, name);
+    setSelected({});
   }
 
   return (

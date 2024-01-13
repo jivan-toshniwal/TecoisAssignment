@@ -6,6 +6,7 @@ import Modal from './UI/Modal';
 import LoginPage from './LoginPage';
 import SignUp from './SignUp';
 import toast from 'react-hot-toast';
+import jsPDF from 'jspdf';
 
 // Styled component for the table container
 const TableDiv = styled.div`
@@ -35,9 +36,8 @@ const users = [
   },
 ];
 
-function DisplayTable({ tableData, isLogin, setLogin }) {
+function DisplayTable({ tableData, isLogin, setLogin, selected, setSelected }) {
   // State to manage selected items for download
-  const [selected, setSelected] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
 
@@ -70,10 +70,32 @@ function DisplayTable({ tableData, isLogin, setLogin }) {
       name,
       process,
       view: tableData[each].view,
-      pdf: tableData[each].pdf,
+      // pdf: tableData[each].pdf,
       id: tableData[each].id,
     };
   });
+
+  // Function to generate PDF
+  const generatePDF = (selectedItems) => {
+    // Loop through selected items
+    selectedItems.forEach((selectedItem, index) => {
+      const pdf = new jsPDF();
+
+      // Set font size and style
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'normal');
+
+      // Add content to the PDF
+      pdf.text(`Name: ${selectedItem.name}`, 20, 20);
+      pdf.text(`Process: ${selectedItem.process}`, 20, 30);
+      pdf.text(`View: ${selectedItem.view}`, 20, 40);
+
+      // Save the PDF with a specific name
+      pdf.save(`download_${index + 1}.pdf`);
+    });
+
+    setSelected({});
+  };
 
   // Function to handle downloading PDFs
   const handleDownloadPDFs = () => {
@@ -82,13 +104,11 @@ function DisplayTable({ tableData, isLogin, setLogin }) {
       setShowModal(true);
       return;
     }
-    // Get an array of selected PDF links
-    const links = Object.values(selected);
 
-    // Open each link in a new browser tab
-    links.forEach((link) => {
-      window.open(link, '_blank');
-    });
+    // Get an array of selected items
+    const selectedItems = Object.values(selected);
+    // Generate and download individual PDFs for each selected item
+    generatePDF(selectedItems);
   };
 
   return (

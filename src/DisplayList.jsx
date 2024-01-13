@@ -2,7 +2,7 @@ import { useState } from 'react';
 import DisplayListHelper from './DisplayListHelper';
 import classes from './display_list.module.css';
 
-function DisplayList({ data, getActiveKey }) {
+function DisplayList({ data, getActiveKey, setSelected }) {
   // Get the keys of the data object
   const lists = Object.keys(data);
 
@@ -16,6 +16,8 @@ function DisplayList({ data, getActiveKey }) {
 
     // Notify the parent component about the active item change
     getActiveKey(item);
+
+    setSelected({});
   };
 
   return (

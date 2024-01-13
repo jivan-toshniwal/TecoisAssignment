@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import Button from './UI/Button';
 import Input from './UI/Input';
 import { StyledDiv } from './UI/MixedStyle';

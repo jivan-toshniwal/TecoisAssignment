@@ -11,13 +11,13 @@ const StyledRow = styled.div`
 function TableRow({ obj, selected, setSelected }) {
   const [viewData, setViewData] = useState('');
 
-  function onCheck(id, pdf) {
+  function onCheck(id, obj) {
     setSelected((old) => {
       const tempObj = { ...old };
       if (old[id]) {
         delete tempObj[id];
       } else {
-        tempObj[id] = pdf;
+        tempObj[id] = { ...obj };
       }
       return tempObj;
     });
@@ -32,7 +32,8 @@ function TableRow({ obj, selected, setSelected }) {
         <input
           type='checkbox'
           checked={selected[obj.id] || false}
-          onChange={(e) => onCheck(obj.id, obj.pdf)}
+          // onChange={(e) => onCheck(obj.id, obj.pdf)}
+          onChange={() => onCheck(obj.id, obj)}
         />
 
         <p>{obj.name}</p>

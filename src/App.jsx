@@ -13,16 +13,15 @@ const StyledNewDiv = styled.div`
 
 function App() {
   // State to store the original data
-  const [data, setData] = useState(processData);
+  const [data] = useState(processData);
   const [process, setProcess] = useState([]);
   const [chemistry, setChemistry] = useState([]);
 
   useEffect(() => {
-    console.log('Rendered');
     const tempChem = [];
     for (const ele in data) {
       Object.keys(data[ele]).map((each) => {
-        const [first, second] = each.split('#');
+        const [first] = each.split('#');
         tempChem.push(first);
       });
     }
@@ -31,6 +30,8 @@ function App() {
 
   // Login In Status
   const [isLogin, setLogin] = useState(false);
+
+  const [selected, setSelected] = useState({});
 
   // State to store the data to be displayed in the table
   const [tableData, setTableData] = useState(data['Gelcoats']);
@@ -65,7 +66,7 @@ function App() {
     if (name === 'Chemistry') {
       const tempProcess = [];
       for (const ele in tempData) {
-        const [first, second] = ele.split('#');
+        const [, second] = ele.split('#');
         tempProcess.push(second);
       }
       setProcess(tempProcess);
@@ -81,7 +82,11 @@ function App() {
         <h1>Our Products</h1>
         <StyledContainer>
           {/* Component to display the list of products */}
-          <DisplayList data={data} getActiveKey={getActiveKey} />
+          <DisplayList
+            data={data}
+            getActiveKey={getActiveKey}
+            setSelected={setSelected}
+          />
 
           <StyledNewDiv>
             {/* Component for filtering data by option */}
@@ -89,6 +94,7 @@ function App() {
               getByOption={getByOption}
               chemistry={chemistry}
               process={process}
+              setSelected={setSelected}
             />
 
             {/* Component to display the table with filtered data */}
@@ -96,6 +102,8 @@ function App() {
               tableData={tableData}
               isLogin={isLogin}
               setLogin={setLogin}
+              selected={selected}
+              setSelected={setSelected}
             />
           </StyledNewDiv>
         </StyledContainer>
