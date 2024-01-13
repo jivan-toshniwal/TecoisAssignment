@@ -1,7 +1,7 @@
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { HiXMark } from 'react-icons/hi2';
-import { useEffect } from 'react';
+import { cloneElement, useEffect } from 'react';
 
 const StyledModal = styled.div`
   position: fixed;
@@ -59,7 +59,7 @@ export default function Modal({ close, children }) {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
-        close();
+        close(false);
       }
     };
     document.addEventListener('keydown', handleKeyDown);
@@ -68,15 +68,15 @@ export default function Modal({ close, children }) {
     };
   }, [close]);
 
-  return createPortal(
-    <Overlay onClick={close}>
+  return (
+    <Overlay onClick={() => close(false)}>
       <StyledModal onClick={(e) => e.stopPropagation()}>
         <ButtonNew>
-          <HiXMark onClick={close} />
+          <HiXMark onClick={() => close(false)} />
         </ButtonNew>
         <div>{children}</div>
+        {/* <div>{cloneElement(children, { onClose: () => close(false) })}</div> */}
       </StyledModal>
-    </Overlay>,
-    document.body
+    </Overlay>
   );
 }

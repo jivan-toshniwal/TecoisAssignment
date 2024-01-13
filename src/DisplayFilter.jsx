@@ -6,25 +6,12 @@ const MainDiv = styled.div`
   display: flex;
 `;
 
-function DisplayFilter({ data, getByOption }) {
-  // Arrays to store unique chemistry and process values
-  const chemistry = [];
-  const process = [];
-
-  // Iterate through the data to extract chemistry and process values
-  for (const ele in data) {
-    Object.keys(data[ele]).map((each) => {
-      const [first, second] = each.split('#');
-      chemistry.push(first);
-      process.push(second);
-    });
-  }
-
+function DisplayFilter({ getByOption, chemistry, process }) {
   // Handle change event for select inputs
   function onOptionChangeHandler(e) {
-    const { value } = e.target;
+    const { name, value } = e.target;
     // Notify the parent component about the selected option
-    getByOption(value);
+    getByOption(value, name);
   }
 
   return (
@@ -35,9 +22,7 @@ function DisplayFilter({ data, getByOption }) {
         <h2>Filter by Chemistry</h2>
         <select name='Chemistry' onChange={onOptionChangeHandler}>
           {/* Default option for selecting chemistry */}
-          <option value='' disabled>
-            Select Chemistry
-          </option>
+          <option value=''>Select Chemistry</option>
           {/* Map through unique chemistry values */}
           {chemistry.map((each, ind) => (
             // Render each option with its value and key

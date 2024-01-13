@@ -31,7 +31,7 @@ function TableRow({ obj, selected, setSelected }) {
       <StyledRow>
         <input
           type='checkbox'
-          checked={selected[obj.id]}
+          checked={selected[obj.id] || false}
           onChange={(e) => onCheck(obj.id, obj.pdf)}
         />
 
